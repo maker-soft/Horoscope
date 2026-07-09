@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#17132f" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Гороскоп" />
+  <title>Гороскоп на сегодня</title>
+
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+  <link rel="icon" href="./icons/icon-192.png" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="stars" aria-hidden="true"></div>
+
+  <main class="app-shell">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Ежедневный прогноз</p>
+        <h1>Гороскоп на сегодня</h1>
+        <p id="todayLabel" class="date-label">Сегодня</p>
+      </div>
+      <button id="installHintBtn" class="ghost-button" type="button" aria-label="Как установить на экран смартфона">
+        На экран
+      </button>
+    </section>
+
+    <section class="card selector-card" aria-labelledby="selectSignTitle">
+      <div class="card-header">
+        <div>
+          <h2 id="selectSignTitle">Выберите знак зодиака</h2>
+          <p>Прогноз формируется автоматически по текущей дате устройства.</p>
+        </div>
+        <button id="fullscreenBtn" class="small-button" type="button">Во весь экран</button>
+      </div>
+
+      <div id="zodiacGrid" class="zodiac-grid" role="list"></div>
+    </section>
+
+    <section id="forecastCard" class="card forecast-card" aria-live="polite">
+      <div class="forecast-top">
+        <div class="sign-badge">
+          <span id="signIcon" class="sign-icon">♈</span>
+        </div>
+        <div>
+          <p class="eyebrow">Ваш прогноз</p>
+          <h2 id="signName">Овен</h2>
+          <p id="signPeriod" class="muted">21 марта — 19 апреля</p>
+        </div>
+      </div>
+
+      <div class="score-row">
+        <div class="score">
+          <span id="energyScore">84</span>
+          <small>энергия</small>
+        </div>
+        <div class="score">
+          <span id="luckScore">76</span>
+          <small>удача</small>
+        </div>
+        <div class="score">
+          <span id="focusScore">69</span>
+          <small>фокус</small>
+        </div>
+      </div>
+
+      <p id="mainForecast" class="main-forecast"></p>
+
+      <div class="forecast-grid">
+        <article>
+          <h3>Работа</h3>
+          <p id="workForecast"></p>
+        </article>
+        <article>
+          <h3>Отношения</h3>
+          <p id="loveForecast"></p>
+        </article>
+        <article>
+          <h3>Финансы</h3>
+          <p id="moneyForecast"></p>
+        </article>
+        <article>
+          <h3>Самочувствие</h3>
+          <p id="healthForecast"></p>
+        </article>
+      </div>
+
+      <div class="lucky-panel">
+        <div>
+          <span class="label">Совет дня</span>
+          <strong id="dayAdvice"></strong>
+        </div>
+        <div>
+          <span class="label">Цвет</span>
+          <strong id="luckyColor"></strong>
+        </div>
+        <div>
+          <span class="label">Число</span>
+          <strong id="luckyNumber"></strong>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="refreshBtn" class="primary-button" type="button">Обновить прогноз</button>
+        <button id="shareBtn" class="secondary-button" type="button">Поделиться</button>
+      </div>
+    </section>
+
+    <section id="installPanel" class="card install-panel hidden">
+      <button id="closeInstallPanel" class="close-button" type="button" aria-label="Закрыть">×</button>
+      <h2>Как запустить на iOS или Android</h2>
+      <p><strong>iPhone / iPad:</strong> откройте сайт в Safari → нажмите «Поделиться» → «На экран Домой».</p>
+      <p><strong>Android:</strong> откройте сайт в Chrome → меню ⋮ → «Добавить на главный экран» или «Установить приложение».</p>
+      <p class="muted">После размещения на GitHub Pages сайт будет открываться как обычная веб‑страница и может работать как PWA.</p>
+    </section>
+
+    <footer>
+      <p>Развлекательный прогноз. Не является медицинской, финансовой или юридической рекомендацией.</p>
+    </footer>
+  </main>
+
+  <div id="analyticsConsent" class="analytics-consent hidden" role="dialog" aria-live="polite" aria-label="Настройка статистики">
+    <div>
+      <strong>Статистика посещений</strong>
+      <p>Сайт может собирать обезличенную аналитику: просмотры, устройства, источники переходов и действия на странице. Персональные данные вручную не запрашиваются.</p>
+    </div>
+    <div class="consent-actions">
+      <button id="analyticsAcceptBtn" class="primary-button" type="button">Разрешить</button>
+      <button id="analyticsDeclineBtn" class="secondary-button" type="button">Отклонить</button>
+    </div>
+  </div>
+
+  <script src="./analytics-config.js"></script>
+  <script src="./analytics.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
