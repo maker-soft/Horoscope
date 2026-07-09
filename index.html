@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#120d2d" />
+  <meta name="theme-color" content="#100922" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Гороскоп" />
@@ -18,76 +18,64 @@
   <div class="stars" aria-hidden="true"></div>
 
   <main class="app" aria-label="Гороскоп на текущий день">
-    <header class="topbar">
-      <div class="brand">
-        <span class="brand-mark">✦</span>
-        <div>
-          <p class="eyebrow">Ежедневный прогноз</p>
-          <h1>Гороскоп на сегодня</h1>
+    <section id="selectScreen" class="view select-screen active" aria-labelledby="selectTitle">
+      <header class="select-header">
+        <p class="eyebrow">Гороскоп на сегодня</p>
+        <h1 id="selectTitle">Выберите знак зодиака</h1>
+        <p id="todayLabel" class="date-line">Сегодня</p>
+      </header>
+
+      <div id="zodiacWheel" class="zodiac-wheel" role="list" aria-label="Выбор знака зодиака по кругу">
+        <div class="orbit orbit-1" aria-hidden="true"></div>
+        <div class="orbit orbit-2" aria-hidden="true"></div>
+        <div class="orbit orbit-3" aria-hidden="true"></div>
+        <div class="wheel-center" aria-hidden="true">
+          <span class="center-star">✦</span>
+          <strong>Нажмите<br>свой знак</strong>
         </div>
       </div>
-      <div class="top-actions">
-        <span id="todayLabel" class="date-pill">Сегодня</span>
-        <button id="fullscreenBtn" class="icon-button" type="button">Во весь экран</button>
-      </div>
-    </header>
+    </section>
 
-    <section class="screen-grid">
-      <section class="zodiac-panel card" aria-labelledby="selectSignTitle">
-        <div class="panel-title">
-          <p class="eyebrow">Круг знаков</p>
-          <h2 id="selectSignTitle">Выберите знак</h2>
-        </div>
-        <div id="zodiacWheel" class="zodiac-wheel" role="list" aria-label="Знаки зодиака по кругу">
-          <div class="orbit orbit-1" aria-hidden="true"></div>
-          <div class="orbit orbit-2" aria-hidden="true"></div>
-          <div class="wheel-center" aria-hidden="true">
-            <span id="centerIcon">♈</span>
-            <strong id="centerName">Овен</strong>
-          </div>
-        </div>
-      </section>
-
-      <section id="forecastCard" class="forecast-card card" aria-live="polite">
-        <div class="forecast-head">
-          <div class="sign-badge"><span id="signIcon">♈</span></div>
+    <section id="forecastScreen" class="view forecast-screen" aria-live="polite" hidden>
+      <article class="forecast-card">
+        <header class="forecast-head">
+          <button id="backToWheelBtn" class="back-button" type="button" aria-label="Вернуться к выбору знака">← Знаки</button>
+          <div class="sign-badge"><span id="signIcon">♑</span></div>
           <div class="forecast-title">
-            <p class="eyebrow">Ваш прогноз</p>
-            <h2 id="signName">Овен</h2>
-            <p id="signPeriod" class="muted">21 марта — 19 апреля</p>
+            <p class="eyebrow">Прогноз на сегодня</p>
+            <h2 id="signName">Козерог</h2>
+            <p id="signPeriod" class="muted">22 декабря — 19 января</p>
           </div>
-          <span id="variantCode" class="variant-code">D001-A</span>
-        </div>
+          <span id="resultDate" class="date-pill">Сегодня</span>
+        </header>
 
-        <div class="score-row" aria-label="Показатели дня">
+        <section class="score-row" aria-label="Показатели дня">
           <div class="score"><strong id="energyScore">84</strong><span>энергия</span></div>
           <div class="score"><strong id="luckScore">76</strong><span>удача</span></div>
           <div class="score"><strong id="focusScore">69</strong><span>фокус</span></div>
-        </div>
+        </section>
 
         <p id="mainForecast" class="main-forecast"></p>
 
-        <div class="forecast-grid">
+        <section class="forecast-grid" aria-label="Подробности прогноза">
           <article><h3>Работа</h3><p id="workForecast"></p></article>
           <article><h3>Отношения</h3><p id="loveForecast"></p></article>
           <article><h3>Финансы</h3><p id="moneyForecast"></p></article>
           <article><h3>Самочувствие</h3><p id="healthForecast"></p></article>
-        </div>
+        </section>
 
-        <div class="lucky-row">
-          <div><span>Совет</span><strong id="dayAdvice"></strong></div>
-          <div><span>Цвет</span><strong id="luckyColor"></strong></div>
-          <div><span>Число</span><strong id="luckyNumber"></strong></div>
-        </div>
+        <section class="advice-box" aria-label="Совет дня">
+          <span>Совет дня</span>
+          <strong id="dayAdvice"></strong>
+        </section>
 
         <div class="actions">
-          <button id="refreshBtn" class="primary-button" type="button">Другой вариант</button>
-          <button id="shareBtn" class="secondary-button" type="button">Поделиться</button>
+          <button id="shareBtn" class="primary-button" type="button">Поделиться</button>
         </div>
-      </section>
-    </section>
+      </article>
 
-    <footer class="footer-note">Развлекательный прогноз. Не является медицинской, финансовой или юридической рекомендацией.</footer>
+      <p class="footer-note">Развлекательный прогноз. Не является медицинской, финансовой или юридической рекомендацией.</p>
+    </section>
   </main>
 
   <script src="./analytics-config.js"></script>

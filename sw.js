@@ -1,4 +1,4 @@
-const CACHE_NAME = "daily-horoscope-circle-v1";
+const CACHE_NAME = "daily-horoscope-circle-v2";
 const ASSETS = [
   "./",
   "./index.html",
