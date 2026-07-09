@@ -1,13 +1,13 @@
-/* Гороскоп дня — двухэкранная круговая версия для GitHub Pages */
 :root {
-  --bg-1: #090719;
-  --bg-2: #17103a;
+  --bg-1: #070616;
+  --bg-2: #170d37;
+  --bg-3: #261353;
   --card: rgba(255, 255, 255, 0.105);
-  --card-strong: rgba(255, 255, 255, 0.16);
+  --card-strong: rgba(255, 255, 255, 0.17);
   --text: #fff8ff;
   --muted: rgba(255, 248, 255, 0.72);
   --accent: #ffd166;
-  --accent-2: #9d8cff;
+  --accent-2: #a99cff;
   --good: #9df7bd;
   --border: rgba(255, 255, 255, 0.18);
   --shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
@@ -24,11 +24,11 @@ body {
     radial-gradient(circle at 18% 16%, rgba(157, 140, 255, 0.42), transparent 28rem),
     radial-gradient(circle at 88% 12%, rgba(255, 209, 102, 0.24), transparent 25rem),
     radial-gradient(circle at 70% 90%, rgba(64, 195, 255, 0.12), transparent 26rem),
-    linear-gradient(135deg, var(--bg-1), var(--bg-2));
+    linear-gradient(135deg, var(--bg-1), var(--bg-2) 58%, var(--bg-3));
   overflow: hidden;
 }
 
-button { font: inherit; -webkit-tap-highlight-color: transparent; }
+button, select { font: inherit; -webkit-tap-highlight-color: transparent; }
 h1, h2, h3, p { margin-top: 0; }
 
 .stars {
@@ -57,12 +57,11 @@ h1, h2, h3, p { margin-top: 0; }
 .view {
   position: absolute;
   inset: 0;
-  padding: calc(env(safe-area-inset-top) + 12px) max(12px, env(safe-area-inset-left)) calc(env(safe-area-inset-bottom) + 10px) max(12px, env(safe-area-inset-right));
+  padding: calc(env(safe-area-inset-top) + 14px) max(14px, env(safe-area-inset-left)) calc(env(safe-area-inset-bottom) + 12px) max(14px, env(safe-area-inset-right));
   opacity: 0;
   transform: scale(.985);
   pointer-events: none;
   transition: opacity .24s ease, transform .24s ease;
-  overflow: hidden;
 }
 .view.active {
   opacity: 1;
@@ -71,7 +70,7 @@ h1, h2, h3, p { margin-top: 0; }
 }
 
 .eyebrow {
-  margin: 0 0 6px;
+  margin: 0 0 7px;
   color: var(--accent);
   font-size: clamp(.62rem, 1.5vw, .82rem);
   letter-spacing: .15em;
@@ -79,35 +78,158 @@ h1, h2, h3, p { margin-top: 0; }
   font-weight: 900;
 }
 .muted { color: var(--muted); }
+.date-line {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-weight: 760;
+  font-size: clamp(.82rem, 2vw, 1.05rem);
+}
 
+/* Первый экран */
+.menu-screen {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: clamp(12px, 2.4dvh, 24px);
+  overflow: hidden;
+}
+.menu-header {
+  width: min(1080px, 100%);
+  margin: 0 auto;
+  text-align: center;
+}
+.menu-header h1 {
+  margin: 0;
+  font-size: clamp(2.05rem, 7vw, 5rem);
+  line-height: .9;
+  letter-spacing: -.065em;
+}
+.horoscope-menu {
+  width: min(1120px, 100%);
+  min-height: 0;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(10px, 1.7vw, 20px);
+  align-content: stretch;
+}
+.menu-card {
+  min-height: 0;
+  padding: clamp(16px, 2.6vw, 30px);
+  border: 1px solid var(--border);
+  border-radius: clamp(24px, 3vw, 38px);
+  color: var(--text);
+  background:
+    radial-gradient(circle at 85% 10%, rgba(255,209,102,.18), transparent 36%),
+    linear-gradient(150deg, rgba(255,255,255,.15), rgba(255,255,255,.055));
+  box-shadow: 0 18px 52px rgba(0,0,0,.28);
+  cursor: pointer;
+  text-align: left;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  align-items: start;
+  gap: clamp(9px, 1.4dvh, 15px);
+  transition: transform .18s ease, border-color .18s ease, background .18s ease;
+}
+.menu-card:hover, .menu-card:focus-visible {
+  transform: translateY(-3px);
+  outline: none;
+  border-color: rgba(255,209,102,.65);
+  background: linear-gradient(150deg, rgba(255,255,255,.19), rgba(255,255,255,.075));
+}
+.menu-card.featured {
+  border-color: rgba(255,209,102,.42);
+  background:
+    radial-gradient(circle at 20% 12%, rgba(255,209,102,.23), transparent 36%),
+    linear-gradient(150deg, rgba(255,255,255,.18), rgba(255,255,255,.07));
+}
+.menu-icon {
+  width: clamp(54px, 7vw, 82px);
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  border-radius: 24px;
+  background: rgba(255,255,255,.10);
+  border: 1px solid var(--border);
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+.menu-card strong {
+  display: block;
+  max-width: 12ch;
+  font-size: clamp(1.15rem, 2.3vw, 2.05rem);
+  line-height: .95;
+  letter-spacing: -.04em;
+}
+.menu-card small {
+  align-self: end;
+  color: var(--muted);
+  font-size: clamp(.78rem, 1.2vw, 1rem);
+  line-height: 1.22;
+  font-weight: 650;
+}
+
+/* Круг выбора знака */
 .select-screen {
   display: grid;
   grid-template-rows: auto 1fr;
   align-items: center;
   justify-items: center;
   gap: clamp(8px, 2dvh, 18px);
+  overflow: hidden;
 }
 .select-header {
+  position: relative;
   width: min(960px, 100%);
   text-align: center;
   min-height: 0;
 }
 .select-header h1 {
   margin: 0;
-  font-size: clamp(2rem, 7.2vw, 5rem);
+  font-size: clamp(1.85rem, 6.8vw, 4.6rem);
   line-height: .9;
   letter-spacing: -.06em;
 }
-.date-line {
-  margin: 10px 0 0;
-  color: var(--muted);
-  font-weight: 760;
-  font-size: clamp(.8rem, 2vw, 1.05rem);
+.ghost-button, .back-button, .primary-button, .mode-btn {
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 900;
+  white-space: nowrap;
 }
-
+.ghost-button, .back-button {
+  min-height: clamp(36px, 5dvh, 44px);
+  padding: 0 clamp(12px, 1.8vw, 18px);
+  color: var(--text);
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.10);
+}
+.top-left {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.mode-switch {
+  margin: clamp(10px, 1.4dvh, 14px) auto 0;
+  width: fit-content;
+  padding: 5px;
+  display: flex;
+  gap: 5px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.08);
+}
+.mode-btn {
+  min-height: 38px;
+  padding: 0 18px;
+  color: var(--text);
+  background: transparent;
+}
+.mode-btn.active {
+  color: #241b00;
+  background: var(--accent);
+}
 .zodiac-wheel {
   position: relative;
-  width: min(92vw, 74dvh, 760px);
+  width: min(92vw, 72dvh, 760px);
   aspect-ratio: 1 / 1;
   min-width: min(92vw, 292px);
   max-width: 100%;
@@ -139,7 +261,6 @@ h1, h2, h3, p { margin-top: 0; }
 }
 .center-star { display: block; color: var(--accent); font-size: clamp(2rem, 8vw, 5rem); line-height: .9; }
 .wheel-center strong { display: block; margin-top: 6px; font-size: clamp(.78rem, 2vw, 1.08rem); line-height: 1.06; }
-
 .zodiac-btn {
   position: absolute;
   left: calc(50% + var(--x) * 1%);
@@ -168,14 +289,14 @@ h1, h2, h3, p { margin-top: 0; }
 .zodiac-symbol { display: block; font-size: clamp(1.55rem, 4.8vw, 2.8rem); line-height: .9; }
 .zodiac-name { display: block; margin-top: 3px; max-width: 96%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: clamp(.50rem, 1.28vw, .78rem); font-weight: 900; }
 
-
+/* Результат по знаку */
 .forecast-screen {
   display: grid;
   grid-template-rows: 1fr;
   place-items: stretch;
   gap: 0;
+  overflow: hidden;
 }
-
 .forecast-card {
   position: relative;
   width: min(1180px, 100%);
@@ -184,7 +305,7 @@ h1, h2, h3, p { margin-top: 0; }
   margin: 0 auto;
   padding: clamp(12px, 2.1vw, 28px);
   display: grid;
-  grid-template-rows: auto auto minmax(0, .9fr) minmax(0, 2.3fr) auto auto;
+  grid-template-rows: auto auto minmax(0, .95fr) minmax(0, 2.35fr) auto auto;
   gap: clamp(8px, 1.45dvh, 16px);
   border: 1px solid var(--border);
   border-radius: clamp(24px, 4vw, 40px);
@@ -207,30 +328,16 @@ h1, h2, h3, p { margin-top: 0; }
   pointer-events: none;
 }
 .forecast-card > * { position: relative; z-index: 1; }
-
 .forecast-head {
   display: grid;
-  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  grid-template-columns: auto auto auto minmax(0, 1fr) auto;
   align-items: center;
   gap: clamp(8px, 1.5vw, 18px);
   min-width: 0;
 }
-.back-button, .primary-button {
-  border: 0;
-  border-radius: 999px;
-  cursor: pointer;
-  font-weight: 900;
-  white-space: nowrap;
-}
-.back-button {
-  min-height: clamp(36px, 5dvh, 44px);
-  padding: 0 clamp(12px, 1.8vw, 18px);
-  color: var(--text);
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,.10);
-}
+.back-button.compact { padding-inline: 14px; }
 .sign-badge {
-  width: clamp(54px, 8vw, 92px);
+  width: clamp(52px, 8vw, 90px);
   aspect-ratio: 1 / 1;
   display: grid;
   place-items: center;
@@ -238,11 +345,11 @@ h1, h2, h3, p { margin-top: 0; }
   background: linear-gradient(145deg, rgba(255,209,102,.35), rgba(157,140,255,.30));
   border: 1px solid var(--border);
 }
-.sign-badge span { font-size: clamp(2.25rem, 5.2vw, 4rem); line-height: 1; }
+.sign-badge span { font-size: clamp(2.15rem, 5.2vw, 4rem); line-height: 1; }
 .forecast-title { min-width: 0; }
 .forecast-title h2 {
   margin: 0;
-  font-size: clamp(1.8rem, 4.8vw, 3.7rem);
+  font-size: clamp(1.72rem, 4.8vw, 3.7rem);
   line-height: .9;
   letter-spacing: -.05em;
 }
@@ -259,7 +366,6 @@ h1, h2, h3, p { margin-top: 0; }
   font-size: clamp(.74rem, 1.25vw, .95rem);
   white-space: nowrap;
 }
-
 .score-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -278,7 +384,6 @@ h1, h2, h3, p { margin-top: 0; }
 }
 .score strong { display: block; color: var(--good); font-size: clamp(1.55rem, 4.5vw, 3.25rem); line-height: .86; letter-spacing: -.05em; }
 .score span { display: block; margin-top: 5px; color: var(--muted); font-size: clamp(.58rem, 1.05vw, .76rem); text-transform: uppercase; letter-spacing: .09em; }
-
 .main-forecast {
   margin: 0;
   min-height: 0;
@@ -286,14 +391,13 @@ h1, h2, h3, p { margin-top: 0; }
   border-radius: clamp(18px, 2.4vw, 26px);
   border: 1px solid rgba(255,255,255,.14);
   background: rgba(255,255,255,.075);
-  font-size: clamp(1.05rem, 2.25vw, 1.7rem);
-  line-height: 1.22;
+  font-size: clamp(1.02rem, 2.2vw, 1.64rem);
+  line-height: 1.21;
   font-weight: 780;
   display: flex;
   align-items: center;
   overflow: hidden;
 }
-
 .forecast-grid {
   min-height: 0;
   display: grid;
@@ -324,14 +428,13 @@ h1, h2, h3, p { margin-top: 0; }
 }
 .forecast-grid p {
   margin: 0;
-  color: rgba(255,248,255,.82);
-  font-size: clamp(.92rem, 1.65vw, 1.22rem);
-  line-height: 1.25;
+  color: rgba(255,248,255,.84);
+  font-size: clamp(.90rem, 1.58vw, 1.18rem);
+  line-height: 1.23;
   font-weight: 650;
 }
-
 .advice-box {
-  min-height: clamp(54px, 7.5dvh, 76px);
+  min-height: clamp(52px, 7.5dvh, 76px);
   padding: clamp(9px, 1.3vw, 14px) clamp(12px, 1.7vw, 18px);
   border: 1px solid rgba(255,209,102,.32);
   border-radius: clamp(17px, 2vw, 22px);
@@ -342,22 +445,209 @@ h1, h2, h3, p { margin-top: 0; }
 }
 .advice-box span { display: block; margin-bottom: 4px; color: var(--muted); font-size: clamp(.60rem, 1.05vw, .76rem); text-transform: uppercase; letter-spacing: .10em; }
 .advice-box strong { display: block; font-size: clamp(.94rem, 1.65vw, 1.22rem); line-height: 1.16; }
-
 .actions { display: flex; justify-content: flex-end; gap: 8px; }
 .primary-button {
-  min-height: clamp(38px, 5dvh, 46px);
-  padding: 0 clamp(18px, 2.4vw, 26px);
+  min-height: clamp(40px, 5.5dvh, 50px);
+  padding: 0 clamp(18px, 2.4vw, 28px);
   color: #241b00;
   background: var(--accent);
+  box-shadow: 0 14px 30px rgba(255,209,102,.18);
 }
-.footer-note { display: none; }
+.primary-button.wide { width: 100%; }
+
+/* Формы: китайский гороскоп и совместимость */
+.form-screen {
+  overflow: auto;
+  display: grid;
+  align-content: start;
+  gap: clamp(14px, 2.3dvh, 24px);
+}
+.form-header,
+.single-form-card,
+.compatibility-grid,
+.result-panel,
+.form-screen > .primary-button {
+  width: min(1120px, 100%);
+  margin-left: auto;
+  margin-right: auto;
+}
+.form-header {
+  position: relative;
+  padding-top: 2px;
+  text-align: center;
+}
+.form-header .ghost-button {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.form-header h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 6vw, 4.2rem);
+  line-height: .92;
+  letter-spacing: -.055em;
+}
+.single-form-card,
+.person-card,
+.result-panel {
+  border: 1px solid var(--border);
+  border-radius: clamp(22px, 3vw, 34px);
+  background: linear-gradient(145deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
+  box-shadow: 0 18px 52px rgba(0,0,0,.24);
+}
+.single-form-card {
+  padding: clamp(16px, 2.5vw, 28px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(10px, 1.6vw, 18px);
+  align-items: end;
+}
+.single-form-card .field-label { grid-column: 1 / -1; }
+.field-label {
+  display: block;
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: .82rem;
+  font-weight: 900;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+.big-select {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 16px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  color: var(--text);
+  background: rgba(8, 6, 22, .74);
+  outline: none;
+  font-weight: 800;
+}
+.big-select:focus { border-color: rgba(255,209,102,.75); }
+.compatibility-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 2vw, 22px);
+}
+.person-card {
+  padding: clamp(16px, 2.4vw, 28px);
+}
+.person-card h2 {
+  margin: 0 0 16px;
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  line-height: .95;
+  letter-spacing: -.04em;
+}
+.person-card .big-select { margin-bottom: 16px; }
+.person-card .big-select:last-child { margin-bottom: 0; }
+.result-panel {
+  min-height: 120px;
+  padding: clamp(14px, 2.2vw, 26px);
+}
+.result-hero {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(12px, 2vw, 22px);
+  align-items: center;
+}
+.result-icon {
+  width: clamp(68px, 10vw, 118px);
+  aspect-ratio: 1 / 1;
+  border-radius: 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,209,102,.34);
+  background: rgba(255,209,102,.12);
+  font-size: clamp(2.2rem, 5vw, 4rem);
+}
+.result-hero h2 {
+  margin: 0 0 8px;
+  font-size: clamp(1.45rem, 3.7vw, 2.8rem);
+  line-height: .98;
+  letter-spacing: -.045em;
+}
+.result-hero p {
+  margin-bottom: 0;
+  color: rgba(255,248,255,.86);
+  font-size: clamp(.92rem, 1.5vw, 1.15rem);
+  line-height: 1.32;
+  font-weight: 620;
+}
+.mini-grid {
+  margin-top: clamp(12px, 2dvh, 20px);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(8px, 1.3vw, 14px);
+}
+.mini-grid div {
+  padding: clamp(12px, 1.7vw, 18px);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: rgba(255,255,255,.07);
+  text-align: center;
+}
+.mini-grid strong {
+  display: block;
+  color: var(--good);
+  font-size: clamp(1.55rem, 4vw, 2.7rem);
+  line-height: .9;
+}
+.mini-grid span {
+  display: block;
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: clamp(.62rem, 1.05vw, .80rem);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-weight: 800;
+}
+.text-blocks {
+  margin-top: clamp(12px, 2dvh, 20px);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(8px, 1.3vw, 14px);
+}
+.text-blocks article {
+  padding: clamp(12px, 1.8vw, 20px);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: rgba(0,0,0,.13);
+}
+.text-blocks h3 {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-size: .86rem;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+.text-blocks p {
+  margin: 0;
+  color: rgba(255,248,255,.84);
+  line-height: 1.28;
+  font-weight: 620;
+}
+
+@media (max-width: 920px) {
+  .horoscope-menu { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 
 @media (max-width: 720px) {
   .view { padding: calc(env(safe-area-inset-top) + 10px) 10px calc(env(safe-area-inset-bottom) + 8px); }
-  .select-screen { grid-template-rows: auto 1fr; gap: 8px; }
-  .select-header h1 { font-size: clamp(1.65rem, 8vw, 2.4rem); }
+  .menu-screen { gap: 10px; }
+  .menu-header h1 { font-size: clamp(1.72rem, 9vw, 2.6rem); }
   .date-line { margin-top: 7px; font-size: .8rem; }
-  .zodiac-wheel { width: min(94vw, calc(100dvh - 116px), 540px); }
+  .horoscope-menu { gap: 9px; }
+  .menu-card { padding: 13px; border-radius: 22px; gap: 8px; }
+  .menu-icon { width: 48px; border-radius: 16px; font-size: 1.9rem; }
+  .menu-card strong { max-width: 11ch; font-size: clamp(1rem, 5vw, 1.35rem); }
+  .menu-card small { font-size: .75rem; line-height: 1.16; }
+
+  .select-screen { gap: 8px; }
+  .select-header h1 { font-size: clamp(1.55rem, 7.4vw, 2.25rem); }
+  .top-left { position: static; margin-bottom: 6px; }
+  .mode-switch { margin-top: 8px; }
+  .mode-btn { min-height: 34px; padding: 0 14px; font-size: .82rem; }
+  .zodiac-wheel { width: min(94vw, calc(100dvh - 154px), 540px); }
   .zodiac-btn { width: clamp(48px, 14vw, 66px); }
   .zodiac-name { font-size: clamp(.42rem, 2.2vw, .58rem); }
   .wheel-center { width: 28%; }
@@ -371,103 +661,137 @@ h1, h2, h3, p { margin-top: 0; }
     border-radius: 24px;
     grid-template-rows: auto auto minmax(0, .85fr) minmax(0, 2.65fr) auto auto;
   }
-  .forecast-head { grid-template-columns: auto auto minmax(0, 1fr); gap: 8px; }
+  .forecast-head { grid-template-columns: auto auto auto minmax(0, 1fr); gap: 7px; }
   .date-pill { display: none; }
-  .back-button { min-height: 34px; padding: 0 10px; font-size: .76rem; }
-  .sign-badge { width: 48px; border-radius: 16px; }
-  .forecast-title h2 { font-size: clamp(1.45rem, 7.4vw, 2.08rem); }
-  .forecast-title .muted { font-size: .68rem; margin-top: 2px; }
+  .back-button { min-height: 32px; padding: 0 9px; font-size: .72rem; }
+  .back-button.compact { padding-inline: 10px; }
+  .sign-badge { width: 45px; border-radius: 15px; }
+  .forecast-title h2 { font-size: clamp(1.3rem, 6.6vw, 1.9rem); }
+  .forecast-title .muted { font-size: .66rem; margin-top: 2px; }
   .eyebrow { font-size: .52rem; margin-bottom: 3px; }
   .score-row { gap: 6px; }
-  .score { min-height: 42px; padding: 6px; border-radius: 15px; }
-  .score strong { font-size: 1.34rem; }
-  .score span { margin-top: 2px; font-size: .52rem; }
-  .main-forecast {
-    padding: 9px 10px;
-    border-radius: 17px;
-    font-size: clamp(.88rem, 3.8vw, 1.08rem);
-    line-height: 1.17;
-  }
+  .score { min-height: 40px; padding: 5px; border-radius: 15px; }
+  .score strong { font-size: 1.26rem; }
+  .score span { margin-top: 2px; font-size: .50rem; }
+  .main-forecast { padding: 9px 10px; border-radius: 17px; font-size: clamp(.83rem, 3.55vw, 1.02rem); line-height: 1.16; }
   .forecast-grid { gap: 7px; }
   .forecast-grid article { padding: 10px; border-radius: 16px; }
-  .forecast-grid h3 { font-size: clamp(.66rem, 2.7vw, .78rem); margin-bottom: 5px; }
-  .forecast-grid p { font-size: clamp(.74rem, 3.25vw, .92rem); line-height: 1.18; }
-  .advice-box { min-height: 44px; padding: 7px 10px; border-radius: 15px; }
-  .advice-box span { font-size: .52rem; margin-bottom: 2px; }
-  .advice-box strong { font-size: clamp(.76rem, 3vw, .92rem); line-height: 1.12; }
+  .forecast-grid h3 { font-size: clamp(.64rem, 2.55vw, .76rem); margin-bottom: 5px; }
+  .forecast-grid p { font-size: clamp(.70rem, 3.05vw, .88rem); line-height: 1.17; }
+  .advice-box { min-height: 42px; padding: 7px 10px; border-radius: 15px; }
+  .advice-box span { font-size: .50rem; margin-bottom: 2px; }
+  .advice-box strong { font-size: clamp(.72rem, 2.85vw, .88rem); line-height: 1.12; }
   .primary-button { min-height: 34px; padding: 0 14px; font-size: .78rem; }
+
+  .form-header { text-align: left; padding-top: 44px; }
+  .form-header .ghost-button { top: 0; }
+  .form-header h1 { font-size: clamp(1.6rem, 8vw, 2.45rem); }
+  .single-form-card { grid-template-columns: 1fr; padding: 14px; border-radius: 22px; }
+  .compatibility-grid { grid-template-columns: 1fr; gap: 10px; }
+  .person-card, .result-panel { padding: 14px; border-radius: 22px; }
+  .person-card h2 { margin-bottom: 12px; }
+  .big-select { min-height: 46px; border-radius: 15px; }
+  .result-hero { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+  .result-icon { width: 76px; border-radius: 22px; }
+  .mini-grid { gap: 7px; }
+  .mini-grid div { padding: 10px 5px; border-radius: 15px; }
+  .mini-grid strong { font-size: 1.5rem; }
+  .mini-grid span { font-size: .55rem; }
+  .text-blocks { grid-template-columns: 1fr; gap: 8px; }
+  .text-blocks article { padding: 12px; border-radius: 16px; }
 }
 
-@media (max-width: 380px) {
-  .select-header h1 { font-size: 1.5rem; }
-  .zodiac-wheel { width: min(95vw, calc(100dvh - 102px)); }
+@media (max-width: 390px) {
+  .menu-card { min-height: 146px; }
+  .menu-card small { font-size: .68rem; }
+  .zodiac-wheel { width: min(95vw, calc(100dvh - 142px)); }
   .zodiac-btn { width: clamp(43px, 13.2vw, 54px); }
   .zodiac-name { display: none; }
   .center-star { font-size: 2.2rem; }
   .wheel-center strong { font-size: .58rem; }
-
-  .forecast-card {
-    gap: 5px;
-    padding: 8px;
-    grid-template-rows: auto auto minmax(0, .75fr) minmax(0, 2.7fr) auto auto;
-  }
-  .forecast-head { gap: 6px; }
-  .back-button { padding: 0 8px; font-size: .70rem; min-height: 31px; }
-  .sign-badge { width: 40px; border-radius: 14px; }
-  .sign-badge span { font-size: 2rem; }
-  .forecast-title h2 { font-size: 1.25rem; }
+  .forecast-card { gap: 5px; padding: 8px; grid-template-rows: auto auto minmax(0, .75fr) minmax(0, 2.7fr) auto auto; }
+  .forecast-head { gap: 5px; }
+  .back-button { padding: 0 7px; font-size: .66rem; min-height: 30px; }
+  .sign-badge { width: 38px; border-radius: 13px; }
+  .sign-badge span { font-size: 1.9rem; }
+  .forecast-title h2 { font-size: 1.15rem; }
   .forecast-title .muted { display: none; }
   .score-row { gap: 5px; }
-  .score { min-height: 34px; padding: 4px; }
-  .score strong { font-size: 1.04rem; }
-  .score span { font-size: .46rem; }
-  .main-forecast { padding: 7px 8px; font-size: clamp(.76rem, 3.7vw, .88rem); line-height: 1.13; }
+  .score { min-height: 33px; padding: 4px; }
+  .score strong { font-size: 1rem; }
+  .score span { font-size: .44rem; }
+  .main-forecast { padding: 7px 8px; font-size: clamp(.70rem, 3.4vw, .84rem); line-height: 1.12; }
   .forecast-grid { gap: 5px; }
   .forecast-grid article { padding: 7px; border-radius: 13px; }
-  .forecast-grid h3 { font-size: .58rem; margin-bottom: 3px; }
-  .forecast-grid p { font-size: clamp(.63rem, 3.15vw, .76rem); line-height: 1.12; }
-  .advice-box { min-height: 36px; padding: 6px 8px; }
+  .forecast-grid h3 { font-size: .56rem; margin-bottom: 3px; }
+  .forecast-grid p { font-size: clamp(.60rem, 2.95vw, .72rem); line-height: 1.11; }
+  .advice-box { min-height: 34px; padding: 6px 8px; }
   .advice-box span { display: none; }
-  .advice-box strong { font-size: .68rem; line-height: 1.08; }
+  .advice-box strong { font-size: .66rem; line-height: 1.08; }
   .actions { justify-content: stretch; }
-  .primary-button { flex: 1; min-height: 31px; }
+  .primary-button { flex: 1; min-height: 30px; }
 }
 
 @media (max-height: 650px) and (orientation: landscape) {
   .view { padding: 7px 10px 6px; }
+  .menu-screen { grid-template-columns: .55fr 1fr; grid-template-rows: 1fr; gap: 12px; align-items: center; }
+  .menu-header { text-align: left; }
+  .menu-header h1 { font-size: clamp(2rem, 5.4vw, 3.4rem); }
+  .horoscope-menu { grid-template-columns: repeat(2, minmax(0, 1fr)); height: 100%; }
+  .menu-card { padding: 12px; border-radius: 20px; }
+  .menu-icon { width: 44px; border-radius: 15px; font-size: 1.8rem; }
+  .menu-card strong { font-size: 1.1rem; }
+  .menu-card small { font-size: .72rem; }
+
   .select-screen { grid-template-columns: .72fr 1fr; grid-template-rows: 1fr; gap: 10px; }
   .select-header { text-align: left; align-self: center; }
+  .top-left { position: static; margin-bottom: 8px; }
   .select-header h1 { font-size: clamp(2rem, 5vw, 3.4rem); }
+  .mode-switch { margin-left: 0; }
   .zodiac-wheel { width: min(78vh, 56vw, 560px); }
   .zodiac-btn { width: clamp(48px, 10vh, 66px); }
 
-  .forecast-card {
-    width: min(1180px, 100%);
-    height: 100%;
-    padding: 9px 11px;
-    gap: 5px;
-    border-radius: 22px;
-    grid-template-rows: auto auto minmax(0, .8fr) minmax(0, 1.75fr) auto auto;
-  }
-  .forecast-head { gap: 8px; }
-  .sign-badge { width: 45px; border-radius: 15px; }
-  .sign-badge span { font-size: 2.1rem; }
-  .forecast-title h2 { font-size: 1.45rem; }
+  .forecast-card { width: min(1180px, 100%); height: 100%; padding: 9px 11px; gap: 5px; border-radius: 22px; grid-template-rows: auto auto minmax(0, .8fr) minmax(0, 1.75fr) auto auto; }
+  .forecast-head { gap: 7px; }
+  .sign-badge { width: 42px; border-radius: 14px; }
+  .sign-badge span { font-size: 2rem; }
+  .forecast-title h2 { font-size: 1.38rem; }
   .forecast-title .muted { display: none; }
-  .date-pill, .back-button { min-height: 30px; font-size: .70rem; }
-  .score-row { gap: 6px; }
-  .score { min-height: 34px; padding: 4px; }
-  .score strong { font-size: 1rem; }
-  .score span { font-size: .48rem; margin-top: 1px; }
-  .main-forecast { padding: 7px 10px; font-size: clamp(.76rem, 1.85vw, .9rem); line-height: 1.12; }
+  .date-pill, .back-button { min-height: 29px; font-size: .68rem; }
+  .score { min-height: 32px; padding: 4px; }
+  .score strong { font-size: .96rem; }
+  .score span { font-size: .46rem; margin-top: 1px; }
+  .main-forecast { padding: 7px 10px; font-size: clamp(.72rem, 1.75vw, .86rem); line-height: 1.11; }
   .forecast-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
-  .forecast-grid article { padding: 8px 9px; border-radius: 13px; justify-content: center; }
-  .forecast-grid h3 { font-size: .58rem; margin-bottom: 4px; }
-  .forecast-grid p { font-size: clamp(.62rem, 1.4vw, .74rem); line-height: 1.12; }
-  .advice-box { min-height: 34px; padding: 5px 8px; }
+  .forecast-grid article { padding: 8px 9px; border-radius: 13px; }
+  .forecast-grid h3 { font-size: .56rem; margin-bottom: 4px; }
+  .forecast-grid p { font-size: clamp(.58rem, 1.3vw, .70rem); line-height: 1.10; }
+  .advice-box { min-height: 32px; padding: 5px 8px; }
   .advice-box span { display: none; }
-  .advice-box strong { font-size: .66rem; line-height: 1.08; }
-  .primary-button { min-height: 30px; font-size: .70rem; padding: 0 14px; }
+  .advice-box strong { font-size: .64rem; line-height: 1.08; }
+  .primary-button { min-height: 29px; font-size: .68rem; padding: 0 14px; }
+
+  .form-screen { gap: 8px; }
+  .form-header { text-align: left; padding-left: 106px; min-height: 40px; }
+  .form-header h1 { font-size: 1.7rem; }
+  .form-header .date-line { display: none; }
+  .compatibility-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .person-card, .single-form-card, .result-panel { padding: 10px; border-radius: 18px; }
+  .person-card h2 { font-size: 1.15rem; margin-bottom: 8px; }
+  .big-select { min-height: 38px; border-radius: 13px; }
+  .field-label { font-size: .62rem; margin-bottom: 5px; }
+  .result-hero { grid-template-columns: auto minmax(0, 1fr); text-align: left; justify-items: stretch; }
+  .result-icon { width: 56px; border-radius: 17px; font-size: 2rem; }
+  .result-hero h2 { font-size: 1.25rem; }
+  .result-hero p { font-size: .76rem; line-height: 1.18; }
+  .mini-grid { margin-top: 8px; }
+  .mini-grid div { padding: 7px; }
+  .mini-grid strong { font-size: 1.05rem; }
+  .mini-grid span { font-size: .48rem; }
+  .text-blocks { margin-top: 8px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .text-blocks article { padding: 8px; }
+  .text-blocks h3 { font-size: .58rem; margin-bottom: 4px; }
+  .text-blocks p { font-size: .66rem; line-height: 1.12; }
 }
 
 @media (min-width: 900px) and (min-height: 760px) {

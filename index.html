@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Гороскоп" />
-  <title>Гороскоп на сегодня</title>
+  <title>Гороскопы</title>
 
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="apple-touch-icon" href="./icons/icon-192.png" />
@@ -17,12 +17,48 @@
 <body>
   <div class="stars" aria-hidden="true"></div>
 
-  <main class="app" aria-label="Гороскоп на текущий день">
-    <section id="selectScreen" class="view select-screen active" aria-labelledby="selectTitle">
+  <main class="app" aria-label="Гороскопы">
+    <section id="menuScreen" class="view menu-screen active" aria-labelledby="menuTitle">
+      <header class="menu-header">
+        <p class="eyebrow">Астрологический экран</p>
+        <h1 id="menuTitle">Выберите вид гороскопа</h1>
+        <p id="menuDateLabel" class="date-line">Сегодня</p>
+      </header>
+
+      <section class="horoscope-menu" aria-label="Виды гороскопов">
+        <button class="menu-card featured" type="button" data-flow="day">
+          <span class="menu-icon">☀️</span>
+          <strong>Гороскоп на день</strong>
+          <small>Прогноз на текущий день по знаку зодиака</small>
+        </button>
+        <button class="menu-card" type="button" data-flow="month">
+          <span class="menu-icon">🌙</span>
+          <strong>Гороскоп на месяц</strong>
+          <small>Общий прогноз месяца по знаку зодиака</small>
+        </button>
+        <button class="menu-card" type="button" data-flow="chinese">
+          <span class="menu-icon">🐉</span>
+          <strong>Китайский календарь</strong>
+          <small>Гороскоп по году рождения</small>
+        </button>
+        <button class="menu-card" type="button" data-flow="compatibility">
+          <span class="menu-icon">💞</span>
+          <strong>Совместимость</strong>
+          <small>Мужчина и женщина: зодиак + год рождения</small>
+        </button>
+      </section>
+    </section>
+
+    <section id="zodiacScreen" class="view select-screen" aria-labelledby="zodiacTitle" hidden>
       <header class="select-header">
-        <p class="eyebrow">Гороскоп на сегодня</p>
-        <h1 id="selectTitle">Выберите знак зодиака</h1>
+        <button id="backToMenuFromZodiacBtn" class="ghost-button top-left" type="button">← Меню</button>
+        <p class="eyebrow">Выбор знака зодиака</p>
+        <h1 id="zodiacTitle">Выберите знак</h1>
         <p id="todayLabel" class="date-line">Сегодня</p>
+        <div class="mode-switch" role="group" aria-label="Период гороскопа">
+          <button id="dayModeBtn" type="button" class="mode-btn active">На день</button>
+          <button id="monthModeBtn" type="button" class="mode-btn">На месяц</button>
+        </div>
       </header>
 
       <div id="zodiacWheel" class="zodiac-wheel" role="list" aria-label="Выбор знака зодиака по кругу">
@@ -39,33 +75,34 @@
     <section id="forecastScreen" class="view forecast-screen" aria-live="polite" hidden>
       <article class="forecast-card">
         <header class="forecast-head">
-          <button id="backToWheelBtn" class="back-button" type="button" aria-label="Вернуться к выбору знака">← Знаки</button>
+          <button id="backToWheelBtn" class="back-button" type="button">← Знаки</button>
+          <button id="backToMenuBtn" class="back-button compact" type="button">Меню</button>
           <div class="sign-badge"><span id="signIcon">♑</span></div>
           <div class="forecast-title">
-            <p class="eyebrow">Прогноз на сегодня</p>
+            <p id="forecastEyebrow" class="eyebrow">Прогноз на сегодня</p>
             <h2 id="signName">Козерог</h2>
             <p id="signPeriod" class="muted">22 декабря — 19 января</p>
           </div>
           <span id="resultDate" class="date-pill">Сегодня</span>
         </header>
 
-        <section class="score-row" aria-label="Показатели дня">
-          <div class="score"><strong id="energyScore">84</strong><span>энергия</span></div>
+        <section class="score-row" aria-label="Показатели прогноза">
+          <div class="score"><strong id="energyScore">84</strong><span id="energyLabel">энергия</span></div>
           <div class="score"><strong id="luckScore">76</strong><span>удача</span></div>
-          <div class="score"><strong id="focusScore">69</strong><span>фокус</span></div>
+          <div class="score"><strong id="focusScore">69</strong><span id="focusLabel">фокус</span></div>
         </section>
 
         <p id="mainForecast" class="main-forecast"></p>
 
         <section class="forecast-grid" aria-label="Подробности прогноза">
-          <article><h3>Работа</h3><p id="workForecast"></p></article>
-          <article><h3>Отношения</h3><p id="loveForecast"></p></article>
-          <article><h3>Финансы</h3><p id="moneyForecast"></p></article>
-          <article><h3>Самочувствие</h3><p id="healthForecast"></p></article>
+          <article><h3 id="workTitle">Работа</h3><p id="workForecast"></p></article>
+          <article><h3 id="loveTitle">Отношения</h3><p id="loveForecast"></p></article>
+          <article><h3 id="moneyTitle">Финансы</h3><p id="moneyForecast"></p></article>
+          <article><h3 id="healthTitle">Самочувствие</h3><p id="healthForecast"></p></article>
         </section>
 
-        <section class="advice-box" aria-label="Совет дня">
-          <span>Совет дня</span>
+        <section class="advice-box" aria-label="Совет">
+          <span id="adviceLabel">Совет дня</span>
           <strong id="dayAdvice"></strong>
         </section>
 
@@ -73,8 +110,53 @@
           <button id="shareBtn" class="primary-button" type="button">Поделиться</button>
         </div>
       </article>
+    </section>
 
-      <p class="footer-note">Развлекательный прогноз. Не является медицинской, финансовой или юридической рекомендацией.</p>
+    <section id="chineseScreen" class="view form-screen" aria-labelledby="chineseTitle" hidden>
+      <header class="form-header">
+        <button id="backToMenuFromChineseBtn" class="ghost-button" type="button">← Меню</button>
+        <p class="eyebrow">Китайский календарь</p>
+        <h1 id="chineseTitle">Гороскоп по году рождения</h1>
+        <p class="date-line">Выберите год рождения, чтобы получить прогноз по китайскому знаку.</p>
+      </header>
+
+      <section class="single-form-card">
+        <label class="field-label" for="birthYearSelect">Год рождения</label>
+        <select id="birthYearSelect" class="big-select"></select>
+        <button id="showChineseBtn" class="primary-button wide" type="button">Показать гороскоп</button>
+      </section>
+
+      <section id="chineseResult" class="result-panel" aria-live="polite"></section>
+    </section>
+
+    <section id="compatibilityScreen" class="view form-screen compatibility-screen" aria-labelledby="compatibilityTitle" hidden>
+      <header class="form-header">
+        <button id="backToMenuFromCompatibilityBtn" class="ghost-button" type="button">← Меню</button>
+        <p class="eyebrow">Гороскоп совместимости</p>
+        <h1 id="compatibilityTitle">Совместимость пары</h1>
+        <p class="date-line">Выберите знаки зодиака и годы рождения по китайскому календарю.</p>
+      </header>
+
+      <section class="compatibility-grid">
+        <article class="person-card">
+          <h2>Мужчина</h2>
+          <label class="field-label" for="maleZodiacSelect">Знак зодиака</label>
+          <select id="maleZodiacSelect" class="big-select"></select>
+          <label class="field-label" for="maleYearSelect">Год рождения</label>
+          <select id="maleYearSelect" class="big-select"></select>
+        </article>
+
+        <article class="person-card">
+          <h2>Женщина</h2>
+          <label class="field-label" for="femaleZodiacSelect">Знак зодиака</label>
+          <select id="femaleZodiacSelect" class="big-select"></select>
+          <label class="field-label" for="femaleYearSelect">Год рождения</label>
+          <select id="femaleYearSelect" class="big-select"></select>
+        </article>
+      </section>
+
+      <button id="calculateCompatibilityBtn" class="primary-button wide" type="button">Рассчитать совместимость</button>
+      <section id="compatibilityResult" class="result-panel compatibility-result" aria-live="polite"></section>
     </section>
   </main>
 
