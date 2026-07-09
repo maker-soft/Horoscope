@@ -10,7 +10,7 @@
   - Umami: websiteId и scriptUrl, например https://cloud.umami.is/script.js
 */
 window.HOROSCOPE_ANALYTICS_CONFIG = {
-  consentMode: true,
+  consentMode: false,
 
   googleAnalytics: {
     enabled: false,
@@ -18,8 +18,8 @@ window.HOROSCOPE_ANALYTICS_CONFIG = {
   },
 
   yandexMetrica: {
-    enabled: false,
-    counterId: 0,
+    enabled: true,
+    counterId: 110547743,
     clickmap: true,
     trackLinks: true,
     accurateTrackBounce: true,

@@ -110,33 +110,18 @@
     }
   }
 
-  function showConsentIfNeeded() {
-    const panel = document.getElementById("analyticsConsent");
-    const acceptBtn = document.getElementById("analyticsAcceptBtn");
-    const declineBtn = document.getElementById("analyticsDeclineBtn");
+  function initializeAnalytics() {
+    if (!hasProvider()) return;
 
-    if (!panel || !acceptBtn || !declineBtn || !hasProvider() || !CONFIG.consentMode) return;
+    if (!CONFIG.consentMode) {
+      startAnalytics();
+      return;
+    }
 
     const consent = getConsent();
     if (consent === "accepted") {
       startAnalytics();
-      return;
     }
-    if (consent === "declined") return;
-
-    panel.classList.remove("hidden");
-
-    acceptBtn.addEventListener("click", () => {
-      setConsent("accepted");
-      panel.classList.add("hidden");
-      startAnalytics();
-      sendEvent("analytics_consent_accepted");
-    });
-
-    declineBtn.addEventListener("click", () => {
-      setConsent("declined");
-      panel.classList.add("hidden");
-    });
   }
 
   window.HoroscopeAnalytics = {
@@ -145,5 +130,5 @@
     consent: getConsent
   };
 
-  document.addEventListener("DOMContentLoaded", showConsentIfNeeded);
+  document.addEventListener("DOMContentLoaded", initializeAnalytics);
 })();
