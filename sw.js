@@ -1,9 +1,10 @@
-const CACHE_NAME = "daily-horoscope-v2";
+const CACHE_NAME = "daily-horoscope-circle-v1";
 const ASSETS = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
+  "./forecasts-data.js",
   "./analytics-config.js",
   "./analytics.js",
   "./manifest.webmanifest",

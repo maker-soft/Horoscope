@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#17132f" />
+  <meta name="theme-color" content="#120d2d" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Гороскоп" />
@@ -17,114 +17,82 @@
 <body>
   <div class="stars" aria-hidden="true"></div>
 
-  <main class="app-shell">
-    <section class="hero">
-      <div>
-        <p class="eyebrow">Ежедневный прогноз</p>
-        <h1>Гороскоп на сегодня</h1>
-        <p id="todayLabel" class="date-label">Сегодня</p>
+  <main class="app" aria-label="Гороскоп на текущий день">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">✦</span>
+        <div>
+          <p class="eyebrow">Ежедневный прогноз</p>
+          <h1>Гороскоп на сегодня</h1>
+        </div>
       </div>
-      <button id="installHintBtn" class="ghost-button" type="button" aria-label="Как установить на экран смартфона">
-        На экран
-      </button>
+      <div class="top-actions">
+        <span id="todayLabel" class="date-pill">Сегодня</span>
+        <button id="fullscreenBtn" class="icon-button" type="button">Во весь экран</button>
+      </div>
+    </header>
+
+    <section class="screen-grid">
+      <section class="zodiac-panel card" aria-labelledby="selectSignTitle">
+        <div class="panel-title">
+          <p class="eyebrow">Круг знаков</p>
+          <h2 id="selectSignTitle">Выберите знак</h2>
+        </div>
+        <div id="zodiacWheel" class="zodiac-wheel" role="list" aria-label="Знаки зодиака по кругу">
+          <div class="orbit orbit-1" aria-hidden="true"></div>
+          <div class="orbit orbit-2" aria-hidden="true"></div>
+          <div class="wheel-center" aria-hidden="true">
+            <span id="centerIcon">♈</span>
+            <strong id="centerName">Овен</strong>
+          </div>
+        </div>
+      </section>
+
+      <section id="forecastCard" class="forecast-card card" aria-live="polite">
+        <div class="forecast-head">
+          <div class="sign-badge"><span id="signIcon">♈</span></div>
+          <div class="forecast-title">
+            <p class="eyebrow">Ваш прогноз</p>
+            <h2 id="signName">Овен</h2>
+            <p id="signPeriod" class="muted">21 марта — 19 апреля</p>
+          </div>
+          <span id="variantCode" class="variant-code">D001-A</span>
+        </div>
+
+        <div class="score-row" aria-label="Показатели дня">
+          <div class="score"><strong id="energyScore">84</strong><span>энергия</span></div>
+          <div class="score"><strong id="luckScore">76</strong><span>удача</span></div>
+          <div class="score"><strong id="focusScore">69</strong><span>фокус</span></div>
+        </div>
+
+        <p id="mainForecast" class="main-forecast"></p>
+
+        <div class="forecast-grid">
+          <article><h3>Работа</h3><p id="workForecast"></p></article>
+          <article><h3>Отношения</h3><p id="loveForecast"></p></article>
+          <article><h3>Финансы</h3><p id="moneyForecast"></p></article>
+          <article><h3>Самочувствие</h3><p id="healthForecast"></p></article>
+        </div>
+
+        <div class="lucky-row">
+          <div><span>Совет</span><strong id="dayAdvice"></strong></div>
+          <div><span>Цвет</span><strong id="luckyColor"></strong></div>
+          <div><span>Число</span><strong id="luckyNumber"></strong></div>
+        </div>
+
+        <div class="actions">
+          <button id="refreshBtn" class="primary-button" type="button">Другой вариант</button>
+          <button id="shareBtn" class="secondary-button" type="button">Поделиться</button>
+        </div>
+      </section>
     </section>
 
-    <section class="card selector-card" aria-labelledby="selectSignTitle">
-      <div class="card-header">
-        <div>
-          <h2 id="selectSignTitle">Выберите знак зодиака</h2>
-          <p>Прогноз формируется автоматически по текущей дате устройства.</p>
-        </div>
-        <button id="fullscreenBtn" class="small-button" type="button">Во весь экран</button>
-      </div>
-
-      <div id="zodiacGrid" class="zodiac-grid" role="list"></div>
-    </section>
-
-    <section id="forecastCard" class="card forecast-card" aria-live="polite">
-      <div class="forecast-top">
-        <div class="sign-badge">
-          <span id="signIcon" class="sign-icon">♈</span>
-        </div>
-        <div>
-          <p class="eyebrow">Ваш прогноз</p>
-          <h2 id="signName">Овен</h2>
-          <p id="signPeriod" class="muted">21 марта — 19 апреля</p>
-        </div>
-      </div>
-
-      <div class="score-row">
-        <div class="score">
-          <span id="energyScore">84</span>
-          <small>энергия</small>
-        </div>
-        <div class="score">
-          <span id="luckScore">76</span>
-          <small>удача</small>
-        </div>
-        <div class="score">
-          <span id="focusScore">69</span>
-          <small>фокус</small>
-        </div>
-      </div>
-
-      <p id="mainForecast" class="main-forecast"></p>
-
-      <div class="forecast-grid">
-        <article>
-          <h3>Работа</h3>
-          <p id="workForecast"></p>
-        </article>
-        <article>
-          <h3>Отношения</h3>
-          <p id="loveForecast"></p>
-        </article>
-        <article>
-          <h3>Финансы</h3>
-          <p id="moneyForecast"></p>
-        </article>
-        <article>
-          <h3>Самочувствие</h3>
-          <p id="healthForecast"></p>
-        </article>
-      </div>
-
-      <div class="lucky-panel">
-        <div>
-          <span class="label">Совет дня</span>
-          <strong id="dayAdvice"></strong>
-        </div>
-        <div>
-          <span class="label">Цвет</span>
-          <strong id="luckyColor"></strong>
-        </div>
-        <div>
-          <span class="label">Число</span>
-          <strong id="luckyNumber"></strong>
-        </div>
-      </div>
-
-      <div class="actions">
-        <button id="refreshBtn" class="primary-button" type="button">Обновить прогноз</button>
-        <button id="shareBtn" class="secondary-button" type="button">Поделиться</button>
-      </div>
-    </section>
-
-    <section id="installPanel" class="card install-panel hidden">
-      <button id="closeInstallPanel" class="close-button" type="button" aria-label="Закрыть">×</button>
-      <h2>Как запустить на iOS или Android</h2>
-      <p><strong>iPhone / iPad:</strong> откройте сайт в Safari → нажмите «Поделиться» → «На экран Домой».</p>
-      <p><strong>Android:</strong> откройте сайт в Chrome → меню ⋮ → «Добавить на главный экран» или «Установить приложение».</p>
-      <p class="muted">После размещения на GitHub Pages сайт будет открываться как обычная веб‑страница и может работать как PWA.</p>
-    </section>
-
-    <footer>
-      <p>Развлекательный прогноз. Не является медицинской, финансовой или юридической рекомендацией.</p>
-    </footer>
+    <footer class="footer-note">Развлекательный прогноз. Не является медицинской, финансовой или юридической рекомендацией.</footer>
   </main>
 
   <script src="./analytics-config.js"></script>
   <script src="./analytics.js"></script>
+  <script src="./forecasts-data.js"></script>
   <script src="./app.js"></script>
 </body>
 </html>
