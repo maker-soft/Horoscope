@@ -1,10 +1,12 @@
-const CACHE_NAME = "daily-horoscope-multi-v1";
+const CACHE_NAME = "daily-horoscope-multi-v3-chinese-365-layout";
 const ASSETS = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
   "./forecasts-data.js",
+  "./monthly-forecasts-data.js",
+  "./chinese-forecasts-data.js",
   "./analytics-config.js",
   "./analytics.js",
   "./manifest.webmanifest",

@@ -808,3 +808,255 @@ h1, h2, h3, p { margin-top: 0; }
   .advice-box { grid-column: 1 / 2; grid-row: 4; }
   .actions { grid-column: 2; grid-row: 4; align-items: stretch; justify-content: flex-end; }
 }
+
+/* v3: исправление наложений, стабильная навигация и адаптивное заполнение экранов */
+.view,
+.view * {
+  min-width: 0;
+}
+
+.view.active {
+  min-height: 0;
+}
+
+.ghost-button,
+.back-button,
+.primary-button,
+.mode-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.forecast-screen {
+  min-height: 0;
+}
+
+.forecast-card {
+  max-height: 100%;
+  min-height: 0;
+}
+
+.forecast-title,
+.forecast-title h2,
+.date-pill,
+.main-forecast,
+.forecast-grid article,
+.advice-box,
+.result-panel,
+.result-hero,
+.text-blocks article,
+.person-card,
+.single-form-card,
+.menu-card {
+  min-width: 0;
+}
+
+.main-forecast,
+.forecast-grid article,
+.advice-box,
+.result-panel,
+.text-blocks article {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.main-forecast {
+  overflow-y: auto;
+  align-items: flex-start;
+  scrollbar-width: thin;
+}
+
+.forecast-grid article {
+  overflow-y: auto;
+  justify-content: flex-start;
+  scrollbar-width: thin;
+}
+
+.advice-box {
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.forecast-grid p,
+.text-blocks p,
+.result-hero p,
+.advice-box strong {
+  max-width: 100%;
+}
+
+.form-screen {
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 18px);
+}
+
+.form-header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  padding-top: 2px;
+  padding-bottom: 8px;
+  border-radius: 0 0 22px 22px;
+  background: linear-gradient(180deg, rgba(7, 6, 22, .92), rgba(7, 6, 22, .62) 70%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.form-header .ghost-button {
+  z-index: 6;
+}
+
+.result-panel {
+  overflow: visible;
+}
+
+.panel-actions {
+  margin-top: clamp(10px, 1.6dvh, 16px);
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.chinese-text-blocks .wide-tip {
+  border-color: rgba(255,209,102,.34);
+  background: rgba(255,209,102,.10);
+}
+
+.compatibility-text-blocks article,
+.chinese-text-blocks article {
+  min-height: 0;
+}
+
+@media (max-width: 720px) {
+  .menu-screen {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .forecast-card {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    grid-template-rows: auto auto auto auto auto auto;
+  }
+
+  .forecast-head {
+    grid-template-columns: auto auto auto minmax(0, 1fr);
+  }
+
+  .forecast-grid {
+    grid-auto-rows: auto;
+  }
+
+  .forecast-grid article {
+    min-height: 0;
+    max-height: none;
+  }
+
+  .main-forecast,
+  .forecast-grid p,
+  .advice-box strong,
+  .text-blocks p,
+  .result-hero p {
+    line-height: 1.22;
+  }
+
+  .form-header {
+    padding-top: 42px;
+  }
+
+  .form-header .ghost-button {
+    left: 0;
+    top: 6px;
+  }
+
+  .single-form-card,
+  .compatibility-grid,
+  .result-panel,
+  .form-screen > .primary-button {
+    width: 100%;
+  }
+
+  .result-panel {
+    overflow: visible;
+  }
+
+  .result-hero h2 {
+    font-size: clamp(1.3rem, 6.2vw, 1.85rem);
+  }
+
+  .result-hero p {
+    font-size: clamp(.78rem, 3.55vw, .96rem);
+  }
+
+  .text-blocks article {
+    overflow: visible;
+  }
+
+  .panel-actions {
+    justify-content: stretch;
+  }
+
+  .panel-actions .ghost-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 390px) {
+  .forecast-card {
+    overflow-y: auto;
+    grid-template-rows: auto auto auto auto auto auto;
+  }
+
+  .main-forecast {
+    font-size: clamp(.72rem, 3.6vw, .88rem);
+  }
+
+  .forecast-grid p {
+    font-size: clamp(.64rem, 3.05vw, .78rem);
+  }
+
+  .text-blocks p {
+    font-size: .72rem;
+    line-height: 1.18;
+  }
+
+  .result-hero p {
+    font-size: .74rem;
+    line-height: 1.18;
+  }
+}
+
+@media (max-height: 650px) and (orientation: landscape) {
+  .forecast-card {
+    overflow-y: auto;
+    grid-template-rows: auto auto auto auto auto auto;
+  }
+
+  .form-screen {
+    overflow-y: auto;
+  }
+
+  .form-header {
+    position: sticky;
+    top: 0;
+    padding-left: 112px;
+    padding-bottom: 4px;
+  }
+
+  .result-panel {
+    overflow: visible;
+  }
+
+  .text-blocks article {
+    overflow: visible;
+  }
+}
+
+@media (min-width: 900px) and (min-height: 760px) {
+  .main-forecast,
+  .forecast-grid article,
+  .advice-box {
+    overflow-y: auto;
+  }
+}

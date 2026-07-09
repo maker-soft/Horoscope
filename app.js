@@ -160,6 +160,12 @@ function getDailyForecast(signId) {
 function getMonthlyForecast(sign) {
   const now = new Date();
   const month = now.getMonth();
+  const monthlyList = window.MONTHLY_HOROSCOPE_FORECASTS && window.MONTHLY_HOROSCOPE_FORECASTS[sign.id];
+
+  if (monthlyList && monthlyList[month]) {
+    return monthlyList[month];
+  }
+
   const year = now.getFullYear();
   const theme = MONTH_THEMES[(month + ZODIAC.findIndex(item => item.id === sign.id) + 12) % MONTH_THEMES.length];
   const base = `${year}-${month}-${sign.id}`;
@@ -188,6 +194,23 @@ function getChineseAnimal(year) {
 
 function getChineseElement(year) {
   return CHINESE_ELEMENTS[((Number(year) % 10) + 10) % 10];
+}
+
+function getChineseDailyForecast(year) {
+  const library = window.CHINESE_DAILY_FORECASTS || [];
+  if (!library.length) {
+    return {
+      tone: "ровный день для практичных решений",
+      work: "Выберите одну главную задачу и доведите её до понятного результата.",
+      relations: "Говорите спокойно и уточняйте ожидания без давления.",
+      advice: "Сделайте один шаг, который укрепляет вашу позицию без лишнего риска.",
+      resource: 75,
+      balance: 74
+    };
+  }
+  const animal = getChineseAnimal(year);
+  const index = (getDayIndex() + animal.index * 17 + Number(year)) % library.length;
+  return library[index];
 }
 
 function setScreen(screenName) {
@@ -316,31 +339,43 @@ function renderChineseHoroscope() {
   const year = Number(el.birthYearSelect.value);
   const animal = getChineseAnimal(year);
   const element = getChineseElement(year);
-  const score = hashNumber(`chinese-${year}-${getDateKey()}`, 64, 98);
-  const dayTone = score > 84 ? "сильный день для инициативы" : score > 72 ? "ровный день для практичных решений" : "день бережного темпа и наблюдательности";
+  const daily = getChineseDailyForecast(year);
+  const score = hashNumber(`chinese-${year}-${getDateKey()}-${daily.advice}`, 64, 98);
+  const balance = daily.balance || hashNumber(`balance-${year}-${getDayIndex()}`, 58, 96);
+  const resource = daily.resource || hashNumber(`resource-${year}-${getDayIndex()}`, 60, 97);
 
   el.chineseResult.innerHTML = `
-    <article class="result-hero">
+    <article class="result-hero chinese-hero">
       <div class="result-icon">${animal.icon}</div>
       <div>
-        <p class="eyebrow">${year} год рождения</p>
+        <p class="eyebrow">${year} год рождения · ${getDateLabel()}</p>
         <h2>${animal.name} · ${element}</h2>
-        <p>${dayTone}. Ваши базовые качества: ${animal.qualities}. Сегодня лучше опираться на сильные стороны знака и не принимать решения из раздражения.</p>
+        <p>${daily.tone}. Базовые качества знака: ${animal.qualities}. Сегодня сильнее всего сработает не скорость, а точность выбранного шага.</p>
       </div>
     </article>
     <div class="mini-grid">
       <div><strong>${score}%</strong><span>потенциал дня</span></div>
-      <div><strong>${hashNumber(`balance-${year}`, 58, 96)}%</strong><span>баланс</span></div>
-      <div><strong>${hashNumber(`resource-${year}`, 60, 97)}%</strong><span>ресурс</span></div>
+      <div><strong>${balance}%</strong><span>баланс</span></div>
+      <div><strong>${resource}%</strong><span>ресурс</span></div>
     </div>
-    <section class="text-blocks">
-      <article><h3>Дела</h3><p>Ставьте перед собой конкретную задачу и фиксируйте результат. Знак ${animal.name} выигрывает там, где есть ясный маршрут.</p></article>
-      <article><h3>Отношения</h3><p>Сработает спокойный тон и уважение к личным границам. Избегайте давления и поспешных выводов.</p></article>
-      <article><h3>Совет</h3><p>Сделайте один шаг, который укрепляет вашу позицию без лишнего риска.</p></article>
+    <section class="text-blocks chinese-text-blocks">
+      <article><h3>Дела</h3><p>${daily.work}</p></article>
+      <article><h3>Отношения</h3><p>${daily.relations}</p></article>
+      <article class="wide-tip"><h3>Совет дня</h3><p>${daily.advice}</p></article>
     </section>
+    <div class="panel-actions">
+      <button class="ghost-button" type="button" data-go-menu>На главную</button>
+    </div>
   `;
 
-  trackAnalytics("chinese_forecast_view", { year, animal: animal.name, element });
+  el.chineseResult.querySelector("[data-go-menu]").addEventListener("click", () => setScreen("menu"));
+
+  trackAnalytics("chinese_forecast_view", {
+    year,
+    animal: animal.name,
+    element,
+    advice_variant: daily.code || "fallback"
+  });
 }
 
 function chineseCompatibilityScore(a, b) {
@@ -390,12 +425,17 @@ function renderCompatibility() {
       <div><strong>${cScore}%</strong><span>китайский цикл</span></div>
       <div><strong>${total}%</strong><span>общий индекс</span></div>
     </div>
-    <section class="text-blocks">
+    <section class="text-blocks compatibility-text-blocks">
       <article><h3>Сильная сторона</h3><p>${maleSign.name} и ${femaleSign.name} могут быстро находить общий курс, если договорятся о правилах общения и не будут соревноваться за контроль.</p></article>
       <article><h3>Зона риска</h3><p>${maleAnimal.name} и ${femaleAnimal.name} по-разному проживают напряжение. Важны паузы, ясные ожидания и прямые договорённости.</p></article>
       <article><h3>Совет пары</h3><p>Обсуждайте не только чувства, но и бытовые решения: деньги, планы, отдых и личное пространство.</p></article>
     </section>
+    <div class="panel-actions">
+      <button class="ghost-button" type="button" data-go-menu>На главную</button>
+    </div>
   `;
+
+  el.compatibilityResult.querySelector("[data-go-menu]").addEventListener("click", () => setScreen("menu"));
 
   trackAnalytics("compatibility_view", {
     male_sign: maleSign.id,
